@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Gerador de Horários</title>
+  </head>
+  <body>
+    <div>
+      <p>
+        Para se ter 10 horários por hora, basta multiplicar a quantidade pelo
+        total de horas. Se o ínicio for 00:00, e o fim for 23:59, são 24 horas,
+        então 24 x 10 = 240, "240" seria o que deve ser colocado no qtd de
+        horarios.
+      </p>
+      <div>
+        início: <br />
+        <input id="start" type="text" placeholder="ex: 13:00" />
+      </div>
+
+      <div>
+        fim: <br />
+        <input id="end" type="text" placeholder="ex: 13:30" />
+      </div>
+
+      <div>
+        qtd de horários: <br />
+        <input id="count" type="number" placeholder="ex: 5" />
+      </div>
+
+      <div>
+        <br />
+        <button id="generator-btn">gerar</button>
+      </div>
+
+      <div id="results"></div>
+    </div>
+
+    <script>
+      const startTime = document.getElementById("start");
+      const endTime = document.getElementById("end");
+      const count = document.getElementById("count");
+      const generatorBtn = document.getElementById("generator-btn");
+      const results = document.getElementById("results");
+
+      generatorBtn.addEventListener("click", () =>
+        generateRandomTimes(startTime.value, endTime.value, count.value)
+      );
+
+      function generateRandomTimes(startTime, endTime, count) {
+        if (!startTime || !endTime || !count) return alert("Faltando dados");
+
+        console.log(`start:${startTime}\nend:${endTime}\ncount:${count}\n`);
+
+        results.innerHTML = "";
+
+        startTime = startTime.trim();
+        endTime = endTime.trim();
+        count = Number(count);
+
+        const start = new Date(`2000-01-01 ${startTime}`);
+        const end = new Date(`2000-01-01 ${endTime}`);
+        const times = [];
+
+        const timeDiff = (end - start) / count;
+
+        for (let i = 0; i < count; i++) {
+          const randomFactor = Math.random() * timeDiff;
+          const time = new Date(start.getTime() + i * timeDiff + randomFactor);
+          const hours = String(time.getHours()).padStart(2, "0");
+          const minutes = String(time.getMinutes()).padStart(2, "0");
+          times.push(`${hours}:${minutes}`);
+        }
+
+        times.forEach((time) => {
+          results.innerHTML += `<br>⏰ ${time}`;
+        });
+
+        return times;
+      }
+    </script>
+  </body>
+</html>
