@@ -58,18 +58,27 @@
         endTime = endTime.trim();
         count = parseInt(count, 10);
 
-        const start = new Date(`2000-01-01 ${startTime}`);
-        const end = new Date(`2000-01-01 ${endTime}`);
+        const start = parseTime(startTime);
+        const end = parseTime(endTime);
+
+        if (!start || !end) return alert("Formato de hora inválido");
+
         const times = [];
 
-        const timeDiff = (end - start) / count;
+        const timeDiff =
+          (end.hour * 60 + end.minute - (start.hour * 60 + start.minute)) /
+          count;
 
         for (let i = 0; i < count; i++) {
           const randomFactor = Math.random() * timeDiff;
-          const time = new Date(start.getTime() + i * timeDiff + randomFactor);
-          const hours = String(time.getHours()).padStart(2, "0");
-          const minutes = String(time.getMinutes()).padStart(2, "0");
-          times.push(`${hours}:${minutes}`);
+          const minutes = Math.floor(
+            start.hour * 60 + start.minute + i * timeDiff + randomFactor
+          );
+          const hours = Math.floor(minutes / 60) % 24;
+          const minutesOfDay = minutes % 60;
+          const formattedHours = String(hours).padStart(2, "0");
+          const formattedMinutes = String(minutesOfDay).padStart(2, "0");
+          times.push(`${formattedHours}:${formattedMinutes}`);
         }
 
         times.forEach((time) => {
@@ -77,6 +86,19 @@
         });
 
         return times;
+      }
+
+      function parseTime(time) {
+        const pattern = /^(\d{1,2}):(\d{2})$/;
+        const match = pattern.exec(time);
+        if (match) {
+          const hour = parseInt(match[1], 10);
+          const minute = parseInt(match[2], 10);
+          if (hour >= 0 && hour <= 23 && minute >= 0 && minute <= 59) {
+            return { hour, minute };
+          }
+        }
+        return null;
       }
     </script>
   </body>
