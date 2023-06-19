@@ -56,7 +56,7 @@
 
         startTime = startTime.trim();
         endTime = endTime.trim();
-        count = Number(count);
+        count = parseInt(count, 10);
 
         const start = new Date(`2000-01-01 ${startTime}`);
         const end = new Date(`2000-01-01 ${endTime}`);
