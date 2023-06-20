@@ -31,75 +31,18 @@
       <div>
         <br />
         <button id="generator-btn">gerar</button>
+        <br />
       </div>
 
+      <div>
+        <br />
+        <button id="copy-btn">Copiar resultado abaixo</button>
+        <br />
+        <br />
+      </div>
       <div id="results"></div>
     </div>
 
-    <script>
-      const startTime = document.getElementById("start");
-      const endTime = document.getElementById("end");
-      const count = document.getElementById("count");
-      const generatorBtn = document.getElementById("generator-btn");
-      const results = document.getElementById("results");
-
-      generatorBtn.addEventListener("click", () =>
-        generateRandomTimes(startTime.value, endTime.value, count.value)
-      );
-
-      function generateRandomTimes(startTime, endTime, count) {
-        if (!startTime || !endTime || !count) return alert("Faltando dados");
-
-        console.log(`start:${startTime}\nend:${endTime}\ncount:${count}\n`);
-
-        results.innerHTML = "";
-
-        startTime = startTime.trim();
-        endTime = endTime.trim();
-        count = parseInt(count, 10);
-
-        const start = parseTime(startTime);
-        const end = parseTime(endTime);
-
-        if (!start || !end) return alert("Formato de hora inválido");
-
-        const times = [];
-
-        const timeDiff =
-          (end.hour * 60 + end.minute - (start.hour * 60 + start.minute)) /
-          count;
-
-        for (let i = 0; i < count; i++) {
-          const randomFactor = Math.random() * timeDiff;
-          const minutes = Math.floor(
-            start.hour * 60 + start.minute + i * timeDiff + randomFactor
-          );
-          const hours = Math.floor(minutes / 60) % 24;
-          const minutesOfDay = minutes % 60;
-          const formattedHours = String(hours).padStart(2, "0");
-          const formattedMinutes = String(minutesOfDay).padStart(2, "0");
-          times.push(`${formattedHours}:${formattedMinutes}`);
-        }
-
-        times.forEach((time) => {
-          results.innerHTML += `<br>⏰ ${time}`;
-        });
-
-        return times;
-      }
-
-      function parseTime(time) {
-        const pattern = /^(\d{1,2}):(\d{2})$/;
-        const match = pattern.exec(time);
-        if (match) {
-          const hour = parseInt(match[1], 10);
-          const minute = parseInt(match[2], 10);
-          if (hour >= 0 && hour <= 23 && minute >= 0 && minute <= 59) {
-            return { hour, minute };
-          }
-        }
-        return null;
-      }
-    </script>
+    <script src="./script.js"></script>
   </body>
 </html>
